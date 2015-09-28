@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#PBS -N pdicerbo_test
+#PBS -l walltime=01:00:00
+#PBS -l nodes=1:ppn=20
+#PBS -q reserved3
+
+module load openmpi
+
+cd /home/ncavalli/pdicerbo_tmp/pdicerbo-P1.2/D1-hands-on/code
+
+for i in 2 4 8 16 20
+do
+	n_stone=$((2000000000/$i))
+	echo "run with n_stone $n_stone, with $i processors" >> /scratch/ncavalli/output_pdicerbo
+	/usr/bin/time mpirun -np $i mpi_pi_pdicerbo.x $n_stone >> /scratch/ncavalli/output_pdicerbo
+done
