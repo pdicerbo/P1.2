@@ -51,7 +51,7 @@ double compute( double * vector, double scalar, int offset, size_t * n_op ){
   for( count = 0; count < LOOP_SIZE; count++ ){
 
     /* perform the next loop from 1 to (vector_size - 1) in order to */
-    /* avoid any segfault with +1 -1 offset */
+    /* avoid any segfault with +1 and -1 offset */
     for( i = 1; i < VECTOR_SIZE - 1; i++){
       vector[i] = scalar * vector[i + offset];
     }
@@ -85,10 +85,9 @@ int main(int argc, char * argv[]){
   }
 
   offset = atoi(argv[1]);
-  
   vector = (double *)malloc(VECTOR_SIZE * sizeof(double));
 
-  /* initialize vector */
+  /* vector initialization */
   for(j = 0; j < VECTOR_SIZE; j++)
     vector[j] = ( (double) j ) / ( (double) VECTOR_SIZE);
 
