@@ -44,19 +44,36 @@ void dummy(double * temp){
 double compute( double * vector, double scalar, size_t size, int offset, size_t * n_op ){
 
   int count, i;
+  double tstart, tend;
+  tstart = second()
 
   for( count = 0; count < LOOP_SIZE; count++ ){
-      
-    // add the loop over the vector elements to compute A(i) = scalar * A(i+offset)
-
+    if(offset == 1){
+      for( i = 0; i < VECTOR_SIZE - 1; i++){
+	vector[i] = scalar * vector[i + offset];
+      }
+      vector[VECTOR_SIZE - 1] *= scalar;
+    }
+    else if (offset == -1){
+      vector[0] *= scalar;
+      for( i = 1; i < VECTOR_SIZE; i++){
+	vector[i] = scalar * vector[i + offset];
+      }
+    }
+    else{
+      for( i = 0; i < VECTOR_SIZE; i++){
+	vector[i] *= scalar;
+    }
     // leave this dummy check to avoid compiler optimization between the two loops
     if( vector[VECTOR_SIZE/2] < 0 ) dummy(&vector[VECTOR_SIZE/2]);
     
   }
   
   // compute the number of operations performed
-
-  return /*the elapsed time */;
+  
+  tend = second();
+  /*return the elapsed time */
+  return (tend - tstart);
 
 }
 

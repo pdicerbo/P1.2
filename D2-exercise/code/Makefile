@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-O0 -Wall
 LFLAGS=-lrt
 
-SRC= ex01.c ex02.c
+SRC= ex01.c #ex02.c
 EXE= $(SRC:%.c=%.x)
 
 all: $(EXE)
