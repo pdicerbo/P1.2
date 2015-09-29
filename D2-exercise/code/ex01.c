@@ -21,7 +21,7 @@
 #include <sys/resource.h>
 #include <unistd.h>
 
-#define LOOP_SIZE 100
+#define LOOP_SIZE 1000
 #define VECTOR_SIZE 1000000
 
 double seconds(){
@@ -41,37 +41,25 @@ void dummy(double * temp){
 
 //The funcion compute(...) return the elapsed time needed to complete the vetor upgrade
 //Number of operation are stored into the variable n_op
-double compute( double * vector, double scalar, size_t size, int offset, size_t * n_op ){
+double compute( double * vector, double scalar, int offset, size_t * n_op ){
 
   int count, i;
   double tstart, tend;
-  tstart = second()
+
+  tstart = seconds();
 
   for( count = 0; count < LOOP_SIZE; count++ ){
-    if(offset == 1){
-      for( i = 0; i < VECTOR_SIZE - 1; i++){
-	vector[i] = scalar * vector[i + offset];
-      }
-      vector[VECTOR_SIZE - 1] *= scalar;
-    }
-    else if (offset == -1){
-      vector[0] *= scalar;
-      for( i = 1; i < VECTOR_SIZE; i++){
-	vector[i] = scalar * vector[i + offset];
-      }
-    }
-    else{
-      for( i = 0; i < VECTOR_SIZE; i++){
-	vector[i] *= scalar;
+    for( i = 1; i < VECTOR_SIZE - 1; i++){
+      vector[i] = scalar * vector[i + offset];
     }
     // leave this dummy check to avoid compiler optimization between the two loops
     if( vector[VECTOR_SIZE/2] < 0 ) dummy(&vector[VECTOR_SIZE/2]);
-    
   }
   
   // compute the number of operations performed
-  
-  tend = second();
+  /* each cycle step perform one sum and one multiplication;  */
+  *n_op = LOOP_SIZE * ( VECTOR_SIZE - 2 ) * 2;
+  tend = seconds();
   /*return the elapsed time */
   return (tend - tstart);
 
@@ -79,10 +67,29 @@ double compute( double * vector, double scalar, size_t size, int offset, size_t 
 
 int main(int argc, char * argv[]){
 
-  // allocate and initialize the vector 
-     
-  // Call the function compute(..) and print the value of the number of operation executed per second 
-  // Repeat such task for offset 0, 1, -1
+  // allocate and initialize the vector
+  double* vector;
+  size_t n_operations;
+  int offset;
+  int j;
+  double t_used, scal = 0.5;
+  
+  if(argc < 2){
+    printf("\n\tUsage:\n\t./ex01.x offset\n\toffset must be int type\n");
+    exit(0);
+  }
+
+  offset = atoi(argv[1]);
+  
+  vector = (double *)malloc(VECTOR_SIZE * sizeof(double));
+
+  for(j = 0; j < VECTOR_SIZE; j++)
+    vector[j] = (double) (j / VECTOR_SIZE);
+
+  t_used = compute(vector, scal, offset, &n_operations);
+  
+  printf("\n\ttotal number operations: %ld\n", n_operations);
+  printf("\ttotal time used: %lg\n", t_used);
 
   return 0;
 
