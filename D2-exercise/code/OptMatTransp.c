@@ -40,18 +40,15 @@ void print_matrix(double* mat, int size){
   }
 }
 
-void optimize_transp(double* mat, double* transp, int size, int block){
+void optimize_transp(double* mat, double* transp, double* tmp, int size, int block){
   /* general index */
   int i, j, n_i, n_j, n_k, n_kk;
   /* block index */
   int k, h;
-  double* tmp;
-
-  tmp = (double*)malloc(block * block * sizeof(double));
 
   for(i = 0; i < size; i += block){
+    n_i = i * size;
     for(j = 0; j < size; j += block){
-      n_i = i * size;
       n_j = j * size;
       for(k = 0; k < block; k++){
 	n_k = k * size;
@@ -68,14 +65,45 @@ void optimize_transp(double* mat, double* transp, int size, int block){
       }
     }
   }
-  free(tmp);
+}
+
+void mm_mult(double* A, double* B, double* C, int size){
+  int i, j, k;
+  int n_i, n_j;
+  for(i = 0; i < size; i++){
+    n_i = i * size;
+    for(j = 0; j < size; j++){
+      n_j = n_i + j;
+      for(k = 0; k < size; k++)
+	C[n_j] += A[n_i + k] * B[k * size + j];
+    }
+  }
+}
+
+void optimized_mm(double* A, double* B, double* C, double* tmp, int size){
+  int h, i, j, k, n_i, n_h;
+
+  for(i = 0; i < size; i++){
+
+    /* storing the i-th column of matrix B in tmp */
+    for(j = 0; j < size; j++)
+      tmp[j] = B[j*size + i];
+
+    /* now cyling on row of matrix A */
+    for(h = 0; h < size; h++){
+      n_h = h * size;
+      n_i = n_h + i;
+      for(k = 0; k < size; k++){
+	C[n_i] += A[n_h + k] * tmp[k];
+      }
+    }
+  }
 }
 
 int main(int argc, char* argv[]){
 
   int block_size, fact, mat_size, i, j;
-  double* matrix;
-  double* transp;
+  double *matrix, *transp, *tmp, *mmult, *opt_m, *mm_tmp;
   double t_start, t_end;
 
   if(argc < 3){
@@ -90,7 +118,11 @@ int main(int argc, char* argv[]){
   mat_size = block_size * fact;
 
   matrix = (double *)malloc(mat_size * mat_size * sizeof(double));
-  transp  = (double *)malloc(mat_size * mat_size * sizeof(double));
+  transp = (double *)malloc(mat_size * mat_size * sizeof(double));
+  mmult  = (double *)calloc(mat_size * sizeof(double), mat_size * sizeof(double));
+  opt_m  = (double *)calloc(mat_size * sizeof(double), mat_size * sizeof(double));
+  tmp    = (double *)malloc(block_size * block_size * sizeof(double));
+  mm_tmp = (double *)malloc(mat_size * sizeof(double));
 
   /* matrix initialization */
   for(i = 0; i < mat_size; i++)
@@ -115,7 +147,7 @@ int main(int argc, char* argv[]){
   printf("\n\tOPTIMIZED VERSION\n");
 
   t_start = seconds();
-  optimize_transp(matrix, transp, mat_size, block_size);
+  optimize_transp(matrix, transp, tmp, mat_size, block_size);
   t_end = seconds();
   printf("\n\ttime used: %lg s\n", (t_end - t_start));
 
@@ -123,8 +155,26 @@ int main(int argc, char* argv[]){
   print_matrix(transp, mat_size);
 #endif
 
+  printf("\n\tMATRIX MULTIPLICATION\n");
+
+  t_start = seconds();
+  mm_mult(matrix, transp, mmult, mat_size);
+  t_end = seconds();
+  printf("\n\ttime used: %lg s\n", (t_end - t_start));
+  /* print_matrix(mmult, mat_size); */
+
+  t_start = seconds();
+  optimized_mm(matrix, transp, opt_m, mm_tmp, mat_size);
+  t_end = seconds();
+  printf("\n\ttime used: %lg s\n", (t_end - t_start));
+  /* print_matrix(opt_m, mat_size); */
+
   free(matrix);
   free(transp);
+  free(tmp);
+  free(mmult);
+  free(opt_m);
+  free(mm_tmp);
 
   return 0;
 }
