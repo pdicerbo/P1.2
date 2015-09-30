@@ -45,27 +45,37 @@ void print_matrix(double* mat, int size){
   }
 }
 
-void optimize_transp(double* mat, int size, int block){
+void optimize_transp(double* mat, double* transp, int size, int block){
   /* general index */
   int i, j;
   /* block index */
   int k, h;
-  double tmp;
+  double* tmp;
 
-  for(i = 0; i < size; i += block)
-    for(j = i; j < size; j += block)
-      for(k = 0; k < block; k++)
+  tmp = (double*)malloc(block * block * sizeof(double));
+
+  for(i = 0; i < size; i += block){
+    for(j = 0; j < size; j += block){
+      for(k = 0; k < block; k++){
 	for(h = 0; h < block; h++){
-	  tmp = mat[i*size + j + k*size + h];
-	  mat[i*size + j + k*size + h] = mat[j*size + i + h*size + k];
-	  mat[j*size + i + h*size + k] = tmp;
+	  tmp[h*block + k] = mat[i*size + j + k*size + h];
 	}
+      }
+      for(k = 0; k < block; k++){
+	for(h = 0; h < block; h++){
+	  transp[j*size + i + k*size + h] = tmp[k*block + h]; 
+	}
+      }
+    }
+  }
+  free(tmp);
 }
 
 int main(int argc, char* argv[]){
 
   int block_size, fact, mat_size, i, j;
   double* matrix;
+  double* transp;
   double t_start, t_end;
 
   if(argc < 3){
@@ -80,14 +90,16 @@ int main(int argc, char* argv[]){
   mat_size = block_size * fact;
 
   matrix = (double *)malloc(mat_size * mat_size * sizeof(double));
+  transp  = (double *)malloc(mat_size * mat_size * sizeof(double));
 
   /* matrix initialization */
   for(i = 0; i < mat_size; i++)
     for(j = 0; j < mat_size; j++)
-      matrix[i * mat_size + j] = ((double) 2*i - j) / ((double) mat_size);
+      matrix[i * mat_size + j] = (double)(i * mat_size + j); //((double) 2*i - j) / ((double) mat_size);
 
-  print_matrix(matrix, mat_size);
-  
+  /* print_matrix(matrix, mat_size); */
+
+  printf("\n\tROW VERSION\n");  
   t_start = seconds();
   row_transpose(matrix, mat_size);
   t_end = seconds();
@@ -95,14 +107,17 @@ int main(int argc, char* argv[]){
   printf("\n\ttime used: %lg s\n", (t_end - t_start));
   print_matrix(matrix, mat_size);
 
+  printf("\n\tOPTIMIZED VERSION\n");
+
   t_start = seconds();
-  optimize_transp(matrix, mat_size, block_size);
+  optimize_transp(matrix, transp, mat_size, block_size);
   t_end = seconds();
   printf("\n\ttime used: %lg s\n", (t_end - t_start));
 
-  print_matrix(matrix, mat_size);
+  print_matrix(transp, mat_size);
 
   free(matrix);
+  free(transp);
 
   return 0;
 }
