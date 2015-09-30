@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O2 -Wall
+CFLAGS=-O2 -Wall 
 LFLAGS=-lrt
 
 SRC= ex01.c #ex02.c
