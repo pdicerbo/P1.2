@@ -19,18 +19,13 @@ double seconds(){
   return sec;
 }
 
-void row_transpose(double* mat, int size){
+void row_transpose(double* mat, double* transp, int size){
   /* transpose matrix in a "brute force" way */
   int i, j;
-  double tmp;
 
-  for(i = 0; i < size; i++){
-    for(j = i; j < size; j++){
-      tmp = mat[i*size + j];
-      mat[i*size + j] = mat[j*size + i];
-      mat[j*size + i] = tmp;
-    }
-  }
+  for(i = 0; i < size; i++)
+    for(j = 0; j < size; j++)
+      transp[i*size + j] = mat[j*size + i];
 }
 
 void print_matrix(double* mat, int size){
@@ -47,7 +42,7 @@ void print_matrix(double* mat, int size){
 
 void optimize_transp(double* mat, double* transp, int size, int block){
   /* general index */
-  int i, j;
+  int i, j, n_i, n_j, n_k, n_kk;
   /* block index */
   int k, h;
   double* tmp;
@@ -56,14 +51,19 @@ void optimize_transp(double* mat, double* transp, int size, int block){
 
   for(i = 0; i < size; i += block){
     for(j = 0; j < size; j += block){
+      n_i = i * size;
+      n_j = j * size;
       for(k = 0; k < block; k++){
+	n_k = k * size;
 	for(h = 0; h < block; h++){
-	  tmp[h*block + k] = mat[i*size + j + k*size + h];
+	  tmp[h*block + k] = mat[n_i + j + n_k + h];
 	}
       }
       for(k = 0; k < block; k++){
+	n_k = k * size;
+	n_kk = k * block;
 	for(h = 0; h < block; h++){
-	  transp[j*size + i + k*size + h] = tmp[k*block + h]; 
+	  transp[n_j + i + n_k + h] = tmp[n_kk + h]; 
 	}
       }
     }
@@ -97,15 +97,20 @@ int main(int argc, char* argv[]){
     for(j = 0; j < mat_size; j++)
       matrix[i * mat_size + j] = (double)(i * mat_size + j); //((double) 2*i - j) / ((double) mat_size);
 
-  /* print_matrix(matrix, mat_size); */
+#ifdef VERBOSE
+  print_matrix(matrix, mat_size);
+#endif
 
   printf("\n\tROW VERSION\n");  
   t_start = seconds();
-  row_transpose(matrix, mat_size);
+  row_transpose(matrix, transp, mat_size);
   t_end = seconds();
 
   printf("\n\ttime used: %lg s\n", (t_end - t_start));
-  print_matrix(matrix, mat_size);
+
+#ifdef VERBOSE
+  print_matrix(transp, mat_size);
+#endif
 
   printf("\n\tOPTIMIZED VERSION\n");
 
@@ -114,7 +119,9 @@ int main(int argc, char* argv[]){
   t_end = seconds();
   printf("\n\ttime used: %lg s\n", (t_end - t_start));
 
+#ifdef VERBOSE
   print_matrix(transp, mat_size);
+#endif
 
   free(matrix);
   free(transp);

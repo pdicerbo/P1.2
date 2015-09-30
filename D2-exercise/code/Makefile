@@ -7,6 +7,9 @@ EXE= $(SRC:%.c=%.x)
 
 all: $(EXE)
 
+verbose: CFLAGS += -DVERBOSE
+verbose: $(EXE)
+
 clean:
 	rm -f *.x *.o *~
 
