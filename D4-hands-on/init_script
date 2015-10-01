@@ -1,14 +1,23 @@
 #!/bin/bash
 
-# NUM_THREADS="1 2 4 8 16 20"
-NUM_THREADS="1 2"
+NUM_THREADS="1 2 4 8 16 20"
+# NUM_THREADS="1 2"
+
+module load python/2.7.8/gnu/4.9.2
+module load numpy/1.9.1/intel/14.0/mkl/11.1/python/2.7.8
+module load matplotlib/1.4.3/python/2.7.8/numpy/1.9.1
+
+if [ -f output.txt ]; then
+    rm output.txt
+fi
 
 for i in $NUM_THREADS
 do
-echo "working with $i threads"
 export OMP_NUM_THREADS=$i
 # echo "OMP_NUM_THREADS=$OMP_NUM_THREADS"
 
-./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> test.out
+./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> output.txt
 
 done
+
+python plot.py
