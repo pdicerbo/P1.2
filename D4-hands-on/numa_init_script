@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NUM_THREADS="1 2 4 8 10"
+NUM_THREADS="1 2 4 6 8 10"
 
 module load intel
 
