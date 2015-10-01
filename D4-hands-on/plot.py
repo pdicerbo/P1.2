@@ -22,4 +22,6 @@ while i < len(band):
 
 plt.figure()
 plt.plot(n_c, mesures, '-o')
+plt.xlabel('Number of cores')
+plt.ylabel('Bandwidth in MB/s')
 plt.savefig("plot.png")

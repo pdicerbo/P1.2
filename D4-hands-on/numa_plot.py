@@ -39,4 +39,6 @@ while i < len(band):
 plt.figure()
 plt.plot(n_c, mesures, '-o')
 plt.plot(n_c, mesures2, '-o')
+plt.xlabel('Number of cores')
+plt.ylabel('Bandwidth in MB/s')
 plt.savefig("numa_plot.png")
