@@ -3,6 +3,7 @@
 NUM_THREADS="1 2 4 8 16 20"
 # NUM_THREADS="1 2"
 
+module load intel
 module load python/2.7.8/gnu/4.9.2
 module load numpy/1.9.1/intel/14.0/mkl/11.1/python/2.7.8
 module load matplotlib/1.4.3/python/2.7.8/numpy/1.9.1
