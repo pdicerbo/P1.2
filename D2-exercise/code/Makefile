@@ -2,10 +2,13 @@ CC=gcc
 CFLAGS=-O2 -Wall 
 LFLAGS=-lrt
 
-SRC= ex01.c #ex02.c
+SRC= OptMatTransp.c #ex01.c #ex02.c
 EXE= $(SRC:%.c=%.x)
 
 all: $(EXE)
+
+verbose: CFLAGS += -DVERBOSE
+verbose: $(EXE)
 
 clean:
 	rm -f *.x *.o *~
