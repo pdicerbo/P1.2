@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-matrix = np.loadtxt("numa00_output.txt")
+matrix = np.loadtxt("numa0_output.txt")
 ncores = matrix[:,0]
 band   = matrix[:,1]
 
@@ -20,7 +20,7 @@ while i < len(band):
     n_c[k] = ncores[i]
     i += NMes; k += 1
 
-matrix = np.loadtxt("numa01_output.txt")
+matrix = np.loadtxt("numa1_output.txt")
 ncores = matrix[:,0]
 band   = matrix[:,1]
 
