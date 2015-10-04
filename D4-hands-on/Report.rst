@@ -10,3 +10,5 @@ check the maximum bandwidth of the system.
 figure:: numa_plot_smallvec.png
 :align: center
 
+	**uDig Project logo.**
+
