@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-matrix = np.loadtxt("numa0_output.txt")
+matrix = np.loadtxt("numa00_output.txt")
 ncores = matrix[:,0]
 band   = matrix[:,1]
 
@@ -20,7 +20,7 @@ while i < len(band):
     n_c[k] = ncores[i]
     i += NMes; k += 1
 
-matrix = np.loadtxt("numa1_output.txt")
+matrix = np.loadtxt("numa01_output.txt")
 ncores = matrix[:,0]
 band   = matrix[:,1]
 
@@ -41,4 +41,4 @@ plt.plot(n_c, mesures, '-o')
 plt.plot(n_c, mesures2, '-o')
 plt.xlabel('Number of cores')
 plt.ylabel('Bandwidth in MB/s')
-plt.savefig("numa_plot.png")
+plt.savefig("numa_plot_smallvec.png")

@@ -14,7 +14,7 @@ export OMP_NUM_THREADS=$i
 count=1
 while [ $count -le 10 ]
 do
-    numactl --cpunodebind=0 --membind=0 ./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> numa0_output.txt
+    numactl --cpunodebind=0 --membind=0 ./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> numa00_output.txt
     count=$((count+1))
 done
 done
@@ -25,7 +25,7 @@ export OMP_NUM_THREADS=$i
 count=1
 while [ $count -le 10 ]
 do
-    numactl --cpunodebind=0 --membind=1 ./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> numa1_output.txt
+    numactl --cpunodebind=0 --membind=1 ./stream.x | grep Triad: | sed s/Triad:/$i/ | awk '{print $1 "\t" $2}' >> numa01_output.txt
     count=$((count+1))
 done
 done
