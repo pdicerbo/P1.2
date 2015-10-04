@@ -16,4 +16,8 @@ Second Part
 ===========
 
 In the second part I have tested the *stream* program in two different configurations with the *numactl* command.
-
+As in the previous part, I have increased the numbers of thread; but in this case with the *numactl* command I
+forced the execution of the program just in one NUMA node of the cluster node. Moreover, I forced also the usage
+of memory in two different configuration: the memory in the NUMA node of the processors and the memory of the
+second NUMA node. The results are summarized in *numa_plot.png* and *numa_plot_smallvec.png* files. The dimension
+of the vectors used in the *stream* program are respectively 8*10^8 and 4*10^8.
