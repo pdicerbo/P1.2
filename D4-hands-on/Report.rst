@@ -20,4 +20,7 @@ As in the previous part, I have increased the numbers of thread; but in this cas
 forced the execution of the program just in one NUMA node of the cluster node. Moreover, I forced also the usage
 of memory in two different configuration: the memory in the NUMA node of the processors and the memory of the
 second NUMA node. The results are summarized in *numa_plot.png* and *numa_plot_smallvec.png* files. The dimension
-of the vectors used in the *stream* program are respectively math:: 8*10^8 and 4*10^8.
+of the vectors used in the *stream* program are respectively 8*10^8 and 4*10^8. Clearly, the usage of memory
+near the processors is more powerful then the other case. Moreover, the maximum bandwidth of this case is always
+smaller then the case of the first part. This happens because without the numactl command the system distributes
+all processes in order to use the memory of both nodes. This allow to maximize the bandwidth.
