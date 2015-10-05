@@ -6,7 +6,7 @@ JOBNUM=$1
 export SLURM_TIME_FORMAT="%s"
 LINE_OUT=$(sacct -u $USER -o jobid,nodelist,start,end,consumedenergy -j $JOBNUM | grep $JOBNUM)
 
-# storing useful data
+# storing useful variables
 NODE_NAME=$(echo $LINE_OUT | awk '{print $2}')
 T_START=$(echo $LINE_OUT | awk '{print $3}')
 T_END=$(echo $LINE_OUT | awk '{print $4}')
