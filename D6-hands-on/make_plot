@@ -15,9 +15,9 @@ set ytics 1000
 set xtics 10
 
 # Make the plot...
-p 'data_to_plot' w l title "Power profile Mont-Blanc"
+p 'data_to_plot' w l title "Power Profile"
 
 # Generate PNG image
-set output "power.png"
+set output "plot.png"
 set terminal png notransparent giant size 1023,600 crop
 rep
