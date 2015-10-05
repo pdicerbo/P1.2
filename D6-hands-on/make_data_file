@@ -1,0 +1,16 @@
+#!/bin/bash
+
+JOBNUM=$1
+
+export SLURM_TIME_FORMAT="%s"
+LINE_OUT=$(sacct -u $USER -o jobid,nodelist,start,end,consumedenergy -j $JOBNUM | grep $JOBNUM)
+NODE_NAME=$(echo $LINE_OUT | awk '{print $2}')
+T_START=$(echo $LINE_OUT | awk '{print $3}')
+T_END=$(echo $LINE_OUT | awk '{print $4}')
+
+dcdbquery -h mb.mont.blanc -r $NODE_NAME-PWR $T_START $T_END > data_tmp
+sed '1d' data_tmp > tmpfile; mv tmpfile data_tmp
+
+cat data_tmp | sed s/$NODE_NAME-PWR,// | sed 's/,/\t/' > data_to_plot
+
+gnuplot make_plot

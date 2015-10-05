@@ -1,0 +1,23 @@
+# Axis lables
+set xlabel "time (s)"
+set ylabel "power (mW)"
+
+# Nice grid appearance
+set grid ytics lt 0 lw 1 lc rgb "#bbbbbb"
+set grid xtics lt 0 lw 1 lc rgb "#bbbbbb"
+
+# Y-axis range / Max 12 Watts
+set yrange [0:12000]
+
+# Y-axis grid spacing every Watt
+set ytics 1000
+# X-axis grid spacing every 10s
+set xtics 10
+
+# Make the plot...
+p 'data_to_plot' w l title "Power profile Mont-Blanc"
+
+# Generate PNG image
+set output "power.png"
+set terminal png notransparent giant size 1023,600 crop
+rep
