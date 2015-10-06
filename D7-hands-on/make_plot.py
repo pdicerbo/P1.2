@@ -1,6 +1,5 @@
-import matplotlib.pyplot as plt#; plt.rcdefaults()
+import matplotlib.pyplot as plt
 import numpy as np
-#import matplotlib.pyplot as plt
 
 atlas_gflop_s = 3.716e+02
 mkl_gflop_s = 4.745e+02
@@ -19,4 +18,5 @@ plt.xticks(x_pos, libs)
 plt.xlabel('library')
 plt.ylabel('GFLOPS/s')
 
-plt.show()
+plt.savefig('n_operation.png')
+plt.close()
