@@ -12,6 +12,8 @@ bandwidth as long as the number of threads increases too. This appens because ea
 increase the number of data processed per second. However, if the number of threads exceeds 10 the
 bandwidth slightly decreases. This results are summarized in *plot.png*.
 
+.. image:: plot.png
+
 Second Part
 ===========
 
