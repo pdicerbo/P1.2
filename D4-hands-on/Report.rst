@@ -26,7 +26,7 @@ second NUMA node. The results are summarized in the following plots.
 .. image:: numa_plot_smallvec.png 
 .. image:: numa_plot.png
 
-In the higher plot the dimension of vector used in the *stream* program is $4*10^8$, in the other is 8*10^8.
+In the higher plot the dimension of vector used in the *stream* program is .. math:: 4*10^8 , in the other is 8*10^8.
 Clearly, the usage of memory near the processors is more powerful then the other case. Moreover, the maximum 
 bandwidth of this case is always smaller then the case of the first part. This happens because without the 
 numactl command the system distributes all processes in order to use the memory of both nodes. This allow to 
