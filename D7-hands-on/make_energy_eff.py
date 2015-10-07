@@ -36,6 +36,6 @@ plt.title('ENERGY EFFICIENCY')
 plt.xlabel('library')
 plt.ylabel('Energy Efficiency (GFLOPS/J)')
 
-plt.show()
-# plt.savefig('power_cons.png')
+# plt.show()
+plt.savefig('joule_efficiency.png')
 plt.close()

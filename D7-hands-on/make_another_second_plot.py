@@ -4,7 +4,7 @@ import numpy as np
 mkl_alltime = 795.21
 atlas_alltime = 1015.55
 
-# ATLAS DATA
+# ATLAS DATA (ENERGY)
 atlas_core = 214583.001 / atlas_alltime
 atlas_dram = 78152.569 / atlas_alltime
 atlas_pkg  = 251377.688 / atlas_alltime
@@ -37,10 +37,10 @@ y_pos[0] = mkl_uncore; y_pos[1] = atlas_uncore
 p3 = plt.bar(x_pos, y_pos, bar_width, align='center', color = 'b')
 
 plt.xticks(x_pos, libs)
-plt.title('AVERAGE POWER')
+plt.title('AVERAGE POWER CONSUMPTION')
 plt.xlabel('library')
 plt.ylabel('Average Power (W)')
 plt.legend( (p1[0], p2[0], p3[0]), ('Core', 'Dram', 'Uncore') )
-plt.show()
-# plt.savefig('avg_power.png')
+# plt.show()
+plt.savefig('energy_power.png')
 plt.close()
